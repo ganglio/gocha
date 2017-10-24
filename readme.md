@@ -4,4 +4,4 @@ Funny tools to play with channels.
 
 ## Status
 
-Currently under active development
+Currently under active development.
