@@ -26,15 +26,15 @@ func TestAddChannelCount(t *testing.T) {
 	m.AddChannel(c2)
 
 	Convey("Count should track the number of open channels added", t, func() {
-		So(m.Count, ShouldEqual, 2)
+		So(m.Count(), ShouldEqual, 2)
 
 		close(c1)
 		time.Sleep(100 * time.Millisecond)
-		So(m.Count, ShouldEqual, 1)
+		So(m.Count(), ShouldEqual, 1)
 
 		close(c2)
 		time.Sleep(100 * time.Millisecond)
-		So(m.Count, ShouldEqual, 0)
+		So(m.Count(), ShouldEqual, 0)
 
 		_, ok := <-m.Out
 		So(ok, ShouldBeFalse)
