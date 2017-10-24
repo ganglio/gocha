@@ -4,7 +4,7 @@ import (
 	"sync"
 )
 
-// Mux is a struct representing the muxed
+// Mux is a struct representing the muxed channels
 type Mux struct {
 	ch chan interface{}
 	sync.RWMutex
@@ -48,4 +48,11 @@ func (m *Mux) AddChannel(c chan interface{}) {
 			close(m.ch)
 		}
 	}(c)
+}
+
+// Add an bunch of channels to the Mux
+func (m *Mux) AddChannels(c ...chan interface{}) {
+	for _, ch := range c {
+		m.AddChannel(ch)
+	}
 }

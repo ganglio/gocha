@@ -23,8 +23,7 @@ func TestAddChannelCount(t *testing.T) {
 	c1 := make(chan interface{})
 	c2 := make(chan interface{})
 
-	m.AddChannel(c1)
-	m.AddChannel(c2)
+	m.AddChannels(c1, c2)
 
 	Convey("Count should track the number of open channels added", t, func() {
 		So(m.Count(), ShouldEqual, 2)
@@ -53,8 +52,7 @@ func TestMultipleAddChannel(t *testing.T) {
 	m, ch := NewMux()
 	c1 := make(chan interface{})
 	c2 := make(chan interface{})
-	m.AddChannel(c1)
-	m.AddChannel(c2)
+	m.AddChannels(c1, c2)
 
 	go func() {
 		Convey("Adding multiple channel and delivering items in order", t, func() {
