@@ -12,8 +12,9 @@ type Mux struct {
 }
 
 // create a new Mux object
-func NewMux() *Mux {
-	return &Mux{ch: make(chan interface{}), count: 0}
+func NewMux() (*Mux, <-chan interface{}) {
+	m := &Mux{ch: make(chan interface{}), count: 0}
+	return m, m.Out()
 }
 
 // Returns the number of muxed channels

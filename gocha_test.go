@@ -7,18 +7,19 @@ import (
 )
 
 func TestAddChannel(t *testing.T) {
-	m := NewMux()
+	m, ch := NewMux()
 	c := make(chan interface{})
 	m.AddChannel(c)
+
 	Convey("AddChannel works as expected", t, func() {
 		c <- 1
-		a := <-m.Out()
+		a := <-ch
 		So(a, ShouldEqual, 1)
 	})
 }
 
 func TestAddChannelCount(t *testing.T) {
-	m := NewMux()
+	m, _ := NewMux()
 	c1 := make(chan interface{})
 	c2 := make(chan interface{})
 
@@ -41,9 +42,15 @@ func TestAddChannelCount(t *testing.T) {
 	})
 }
 
+func TestNewMuxChannelReturn(t *testing.T) {
+	Convey("NewMux() should return the same channel as the Out() method", t, func() {
+		m, c := NewMux()
+		So(c, ShouldEqual, m.Out())
+	})
+}
+
 func TestMultipleAddChannel(t *testing.T) {
-	m := NewMux()
-	ch := m.Out()
+	m, ch := NewMux()
 	c1 := make(chan interface{})
 	c2 := make(chan interface{})
 	m.AddChannel(c1)
