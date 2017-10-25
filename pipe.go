@@ -23,6 +23,7 @@ func NewPipe() *Pipe {
 			}
 			p.out <- e
 		}
+		close(p.out)
 	}()
 	return p
 }

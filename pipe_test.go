@@ -63,4 +63,12 @@ func TestAddProcs(t *testing.T) {
 		p.In() <- 2
 		So(<-p.Out(), ShouldEqual, 16)
 	})
+
+	Convey("Closing the input closes the output", t, func() {
+		p := NewPipe()
+		close(p.In())
+
+		_, ok := <-p.Out()
+		So(ok, ShouldBeFalse)
+	})
 }
