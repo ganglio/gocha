@@ -7,19 +7,19 @@ import (
 )
 
 func TestAddChannel(t *testing.T) {
-	m, ch := NewMux()
+	m := NewMux()
 	c := make(chan interface{})
-	m.AddChannel(c)
+	m.AddChannels(c)
 
 	Convey("AddChannel works as expected", t, func() {
 		c <- 1
-		a := <-ch
+		a := <-m.Out()
 		So(a, ShouldEqual, 1)
 	})
 }
 
 func TestAddChannelCount(t *testing.T) {
-	m, _ := NewMux()
+	m := NewMux()
 	c1 := make(chan interface{})
 	c2 := make(chan interface{})
 
@@ -41,33 +41,27 @@ func TestAddChannelCount(t *testing.T) {
 	})
 }
 
-func TestNewMuxChannelReturn(t *testing.T) {
-	Convey("NewMux() should return the same channel as the Out() method", t, func() {
-		m, c := NewMux()
-		So(c, ShouldEqual, m.Out())
-	})
-}
-
 func TestMultipleAddChannel(t *testing.T) {
-	m, ch := NewMux()
+	m := NewMux()
 	c1 := make(chan interface{})
 	c2 := make(chan interface{})
 	m.AddChannels(c1, c2)
 
 	go func() {
-		Convey("Adding multiple channel and delivering items in order", t, func() {
-			cnt := 1
-			for elem := range ch {
-				So(elem, ShouldEqual, cnt)
-				cnt += 1
-			}
-		})
+		defer close(c1)
+		defer close(c2)
+		c1 <- true
+		c2 <- true
+		c2 <- true
+		c1 <- true
 	}()
 
-	go func() {
-		c1 <- 1
-		c2 <- 2
-		c2 <- 3
-		c1 <- 4
-	}()
+	Convey("Adding multiple channel and delivering items in order", t, func() {
+		cnt := 0
+		for elem := range m.Out() {
+			So(elem, ShouldBeTrue)
+			cnt += 1
+		}
+		So(cnt, ShouldEqual, 4)
+	})
 }
