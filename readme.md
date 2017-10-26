@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/ganglio/gocha.svg?branch=master)](https://travis-ci.org/ganglio/gocha)
 [![codecov](https://codecov.io/gh/ganglio/gocha/branch/master/graph/badge.svg)](https://codecov.io/gh/ganglio/gocha)
 [![GoDoc](https://godoc.org/github.com/ganglio/gocha?status.svg)](https://godoc.org/github.com/ganglio/gocha)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ganglio/gocha)](https://goreportcard.com/report/github.com/ganglio/gocha)
 
 Funny tools to play with channels.
 
