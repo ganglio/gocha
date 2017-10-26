@@ -60,7 +60,7 @@ func TestMultipleAddChannel(t *testing.T) {
 		cnt := 0
 		for elem := range m.Out() {
 			So(elem, ShouldBeTrue)
-			cnt += 1
+			cnt++
 		}
 		So(cnt, ShouldEqual, 4)
 	})

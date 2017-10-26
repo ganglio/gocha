@@ -6,7 +6,7 @@ import (
 )
 
 func TestAddProcSingle(t *testing.T) {
-	Convey("AppProc works as expected", t, func() {
+	Convey("AddProc works as expected", t, func() {
 		p := NewPipe()
 		Convey("When freshly instantiated ProcsLen is zero", func() {
 			So(p.ProcsLen(), ShouldEqual, 0)

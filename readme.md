@@ -15,6 +15,7 @@ Currently under active development.
   - `Mux`, A channel multiplexer. Gets a number of channels as input and returns a single channel as output. Each message sent on any of the input channel is forwarded to the output one.
   - `Pipe`, Takes a number of functions as input and exposes an input and output channels. Upon receiving a message on the input channel it applies all the input functions in order (the order is important) and sends the result on the output channel.
   - `Tee`, Takes a number of channels as output and exposes an input channel. Upon receiving a message on the input channel it forwards it to all the output channels.
+  - `Switch`, Takes a number of channels as output and exposes an input channel. Using the provided function upon receiving a message on the input channel uses the function to decide what output channel to forward the message to.
 
 ## Usage
 
@@ -99,6 +100,38 @@ t.AddOuts(c1,c2,c3)
 t.In()<-1
 fmt.Println(<-c1)
 fmt.Println(<-c2)
+fmt.Println(<-c3)
+```
+
+#### Closing
+
+When the input channel is closed all the outs are closed
+
+### `Switch`
+
+#### Initialize the Switch
+```go
+s := gocha.NewTee(func(i interface{}) int {
+  return i.(int)
+})
+```
+
+#### Add few outs
+```go
+c1 := make(chan interface{})
+c2 := make(chan interface{})
+c3 := make(chan interface{})
+
+s.AddOuts(c1,c2,c3)
+```
+
+#### Profit
+```go
+s.In()<-0
+fmt.Println(<-c1)
+s.In()<-1
+fmt.Println(<-c2)
+s.In()<-2
 fmt.Println(<-c3)
 ```
 

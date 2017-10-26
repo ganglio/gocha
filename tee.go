@@ -8,7 +8,7 @@ type Tee struct {
 	in  chan interface{}
 }
 
-// Create a new Tee object
+// NewTee create a new Tee object
 func NewTee() *Tee {
 	t := &Tee{in: make(chan interface{})}
 
@@ -27,17 +27,17 @@ func NewTee() *Tee {
 	return t
 }
 
-// The input channel
+// In returns the input channel
 func (t *Tee) In() chan<- interface{} {
 	return t.in
 }
 
-// Adds outs to the tee
+// AddOuts adds output channels to the Tee
 func (t *Tee) AddOuts(out ...chan interface{}) {
 	t.out = append(t.out, out...)
 }
 
-// Returns the number of outs attached to the tee
+// OutLen returns the number of output channels
 func (t *Tee) OutLen() int {
 	return len(t.out)
 }
