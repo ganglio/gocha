@@ -1,7 +1,5 @@
 package gocha
 
-import "fmt"
-
 // Tee is a struct representing the channel duplicator
 type Tee struct {
 	out []chan interface{}
@@ -14,9 +12,8 @@ func NewTee() *Tee {
 
 	go func() {
 		for e := range t.in {
-			fmt.Printf("%#v", e)
 			for _, c := range t.out {
-				c <- e
+				go func(ee interface{}, cc chan<- interface{}) { cc <- ee }(e, c)
 			}
 		}
 		for _, c := range t.out {
